@@ -1,0 +1,9 @@
+paths.env
+__pycache__/
+*.pyc
+*.bag
+*.db3
+*.pcd
+runs/
+odom/
+pc2/
