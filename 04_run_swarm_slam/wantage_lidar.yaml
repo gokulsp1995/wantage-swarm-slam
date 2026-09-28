@@ -1,0 +1,44 @@
+# Swarm-SLAM config for the Wantage walks (Geoscan S2 / Livox MID-360 + FAST-LIO odometry).
+# Based on cslam_experiments/config/graco_lidar.yaml. Changes are marked CHANGED.
+/**:
+  ros__parameters:
+    frontend:
+      odom_topic: "odom"                   # -> /rN/odom        (FAST-LIO /Odometry)
+      sensor_type: "lidar"
+      pointcloud_topic: "pointcloud"       # -> /rN/pointcloud  (FAST-LIO /cloud_registered_body)
+      voxel_size: 0.5
+      registration_min_inliers: 60         # lower to 40 if registration keeps failing on sparse MID-360 scans
+      inter_robot_loop_closure_budget: 5   # CHANGED from 1: more candidates verified per round, faster visible merges
+      inter_robot_detection_period_sec: 5
+      enable_sparsification: true          # the paper's spectral prioritization
+      max_queue_size: 10
+      similarity_threshold: 0.8
+      global_descriptors_topic: "global_descriptors"
+      intra_loop_min_inbetween_keyframes: 20
+      detection_publication_period_sec: 0.5
+      detection_publication_max_elems_per_msg: 100
+      enable_intra_robot_loop_closures: true  # each walk returns to the office: intra-robot loops expected
+      keyframe_generation_ratio_distance: 0.5
+      pointcloud_odom_approx_time_sync_s: 0.1
+      use_vertex_cover_selection: true
+      map_manager_process_period_ms: 100
+      global_descriptor_technique: "scancontext"
+    neighbor_management:
+      enable_neighbor_monitoring: true
+      max_heartbeat_delay_sec: 5.0
+      init_delay_sec: 5.0
+      heartbeat_period_sec: 1.0
+    backend:
+      pose_graph_optimization_start_period_ms: 10000
+      pose_graph_optimization_loop_period_ms: 100
+      max_waiting_time_sec: 3600
+      enable_broadcast_tf_frames: true
+    evaluation:
+      enable_logs: true                    # CHANGED: write results/ (g2o graphs, timestamps, GPS)
+      log_folder: "results"                # relative to the folder you launch from
+      enable_gps_recording: true           # CHANGED: record RTK per keyframe -> gps_robot_N.csv
+      gps_topic: "gps/fix"                 # -> /rN/gps/fix (RTK /handsfree/rtk/gnss)
+      enable_sparsification_comparison: false
+    visualization:
+      enable: true
+      publishing_period_ms: 1000

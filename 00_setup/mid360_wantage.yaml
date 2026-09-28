@@ -1,0 +1,41 @@
+/**:
+  ros__parameters:
+    common:
+      lidar_frame: "livox_frame"
+      imu_frame: "livox_frame"
+      visualization_frame: "imu"
+
+    gravity_alignment:
+      enable_gravity_alignment: true
+      
+    preprocess:
+      lidar_type: 5          # 5 = LIVOX_PC2 (native Livox PointCloud2, xfer_format=0)
+      scan_line: 4           # MID-360 effective scan lines
+      blind: 0.5             # Minimum detection range (m)
+      timestamp_unit: 3      # 3 = Nanoseconds (offset_time from livox converter)
+
+    mapping:
+      acc_cov: 0.1
+      gyr_cov: 0.1
+      b_acc_cov: 0.0001
+      b_gyr_cov: 0.0001
+      fov_degree: 360.0      # MID-360 has 360° horizontal FoV
+      det_range: 40.0        # 40m max detection range
+      extrinsic_est_en: false
+      # Identity extrinsics — MID-360 has co-located LiDAR + IMU
+      extrinsic_T: [0.0, 0.0, 0.0]
+      extrinsic_R: [1.0, 0.0, 0.0,
+                     0.0, 1.0, 0.0,
+                     0.0, 0.0, 1.0]
+
+    filter_size_map: 0.05    # Voxel filter for map (m)
+
+    publish:
+      path_en: true
+      scan_publish_en: true       # Publish registered scans
+      dense_publish_en: true      # Full-density output
+      scan_bodyframe_pub_en: true # Also publish in body frame
+
+    pcd_save:
+      pcd_save_en: true
+      interval: -1                # -1 = save all frames to one PCD
